@@ -102,39 +102,31 @@ public class PhiloUnicodeSwing extends JFrame{
 
 
         clear = new JButton("Clear");
-        clear.addActionListener(new ActionListener() {
-            //@Override
-            public void actionPerformed(ActionEvent e) {
+        clear.addActionListener(e -> {
                 inputarea.setText("");
                 outputarea.setText("");
                 inputarea.requestFocus();
             }
-        });
+        );
 
         sub = new JButton("Submit");
         sub.setToolTipText("Click this button to send your answer to be checked.");
-        sub.addActionListener(new ActionListener() {
-            //@Override
-            public void actionPerformed(ActionEvent e) {
-                //inputarea.getText("");
+        sub.addActionListener(e -> {
                 outputarea.setText(inputarea.getText());
                 inputarea.requestFocus();
             }
-        });
+        );
 
         quit = new JButton("Quit");
-        quit.addActionListener(new ActionListener() {
-            //@Override
-            public void actionPerformed(ActionEvent e) {
+        quit.addActionListener(e -> {
                 inputarea.setText("You're finished!");
                 setVisible(false);
                 System.exit(0);
             }
-        });
+        );
 
         answer = new JButton("Answer");
         answer.setToolTipText("Returns an answer; anything equivalent is just as good.");
-        //sub = new JButton("Submit");
         parse = new JButton("Parse");
         parse.setToolTipText("Click this first; it will check that the formula is well-formed.");
         l = new JLabel("Choose example #");
@@ -243,16 +235,14 @@ public class PhiloUnicodeSwing extends JFrame{
             //without next call, symbols coming from elsewhere
             // also, iff and onlyif do not appear
             this.setFont(thisFont);
-            this.addActionListener(new ActionListener() {
-                //@Override
-                public void actionPerformed(ActionEvent e) {
+            this.addActionListener(e -> {
                     String s = e.getActionCommand();
                     int pos = inputarea.getCaretPosition();
                     inputarea.insert(s, pos);
                     //inputarea.append(s);
                     inputarea.requestFocus();
                 }
-            });
+            );
         }
     }
 
