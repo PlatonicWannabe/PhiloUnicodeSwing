@@ -14,6 +14,9 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.CharArrayReader;
+import java.io.Reader;
+import java.text.ParseException;
 import javax.swing.*;
 
 
@@ -36,6 +39,7 @@ public class PhiloUnicodeSwing extends JFrame{
     String errstr, n, strwidth, attempt, result;
     String theOS, getexample, example, translation, getanswer;
     private JLabel l;
+    StrFormUni parser;
 
 
     private Font thisFont=new Font("Arial Unicode MS", Font.PLAIN, 12);
@@ -127,8 +131,19 @@ public class PhiloUnicodeSwing extends JFrame{
 
         answer = new JButton("Answer");
         answer.setToolTipText("Returns an answer; anything equivalent is just as good.");
+
         parse = new JButton("Parse");
         parse.setToolTipText("Click this first; it will check that the formula is well-formed.");
+        parse.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    getParse();
+                } catch (ParseException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+
         l = new JLabel("Choose example #");
         //att = new Attempt();
         firstTime = true;
@@ -221,9 +236,50 @@ public class PhiloUnicodeSwing extends JFrame{
         setVisible(true);
     }//end buildGUI
 
+    public void getParse() throws ParseException {
+        str = this.inputarea.getText();
+        String unistr = addUnicodeEscapes(str);
+        String parsestr = unistr+"\n";
+        char[] contents = parsestr.toCharArray();
+        Reader in = new CharArrayReader(contents);
+        if(firstTime){
+            StrFormUni parser = new StrFormUni(in);
+            firstTime = false;
+        }else {
+            StrFormUni.ReInit(in);
+        }
+        try {
+            StrFormUni.input();
+            String s = ((String) StrFormUni.argStack.pop());
+            outputarea.setText("Canonical form = " + s + "\n\n");
+            parse.setEnabled(false);
+            sub.setEnabled(true);
 
-    /**Note that any button created by this generic inner class has attached an
-     anonymous inner class that listens for the event of the button
+        } catch (Exception ex) {
+            outputarea.setText(ex.getMessage());
+            sub.setEnabled(false);
+            parse.setEnabled(true);
+        }
+    }
+
+    public String addUnicodeEscapes(String str) {
+        String retval = "";
+        char ch;
+        for (int i = 0; i < str.length(); i++) {
+            ch = str.charAt(i);
+            if ( ch != '\n' && ch != '\r') {
+                String s = "0000" + Integer.toString(ch, 16);
+                retval += "\\u" + s.substring(s.length() -4, s.length());
+            } else {
+                retval += ch;
+            }
+        }
+        return retval;
+    }
+
+
+    /**Note that any button created by this generic inner class has attached a
+     lambda expression that listens for the event of the button
      being pushed and which then performs the appropriate action.
      Inner class code from Nutshell pp 154-155
      Since students will be editing, I changed append to insert.
