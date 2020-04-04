@@ -24,21 +24,15 @@ import javax.swing.*;
 public class PhiloUnicodeSwing extends JFrame{
 
     private JTextArea outputarea;
-    private JTextArea examplearea, inputarea;
-    private JScrollPane outputareaScrollPane, exampleareaScrollPane;
+    private JTextArea inputarea;
 
-    //The next to simplify creating new buttons
-    //JButton all, some, onlyif, and, iff, or, not;
-    private JButton clear, quit;
     String  str, inputfile, outputfile;
-    private JPanel p;
-    private Choice n1;
     //Just testing
-    private JButton sub, parse, answer;
+    private JButton sub;
+    private JButton parse;
     int width = 50;
     String errstr, n, strwidth, attempt, result;
     String theOS, getexample, example, translation, getanswer;
-    private JLabel l;
     StrFormUni parser;
 
 
@@ -62,7 +56,7 @@ public class PhiloUnicodeSwing extends JFrame{
 
     private void buildGUI() {
 
-        p = new JPanel();
+        JPanel p = new JPanel();
 
         //They will type the symbols into this inputarea
         // Should I add an actionListener if they hit Enter?
@@ -72,14 +66,14 @@ public class PhiloUnicodeSwing extends JFrame{
         inputarea.setBackground(Color.white);
 
         //A TextArea where the example will be displayed
-        examplearea = new JTextArea(8, 50);
+        JTextArea examplearea = new JTextArea(8, 50);
         examplearea.setLineWrap(true);
         examplearea.setEditable(false);
         examplearea.setBackground(Color.white);
         examplearea.setText("Welcome to Philo the Logician.\n\nGive me a chance to contact the server\nand get the first example.");
 
         //wrap it in a ScrollPane with a title
-        exampleareaScrollPane = new JScrollPane(examplearea);
+        JScrollPane exampleareaScrollPane = new JScrollPane(examplearea);
         exampleareaScrollPane.setVerticalScrollBarPolicy(
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         exampleareaScrollPane.setPreferredSize(new Dimension(400, 200));
@@ -95,7 +89,7 @@ public class PhiloUnicodeSwing extends JFrame{
         outputarea.setBackground(Color.white); //a method of Component class
 
         // wrap it in a ScrollPane with a title
-        outputareaScrollPane = new JScrollPane(outputarea);
+        JScrollPane outputareaScrollPane = new JScrollPane(outputarea);
         outputareaScrollPane.setVerticalScrollBarPolicy(
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         outputareaScrollPane.setPreferredSize(new Dimension(400, 200));
@@ -103,13 +97,14 @@ public class PhiloUnicodeSwing extends JFrame{
         outputareaScrollPane.setBorder(BorderFactory.createTitledBorder("Evaluating Your Answer"));
 
 
-
-
-        clear = new JButton("Clear");
+        //The next to simplify creating new buttons
+        //JButton all, some, onlyif, and, iff, or, not;
+        JButton clear = new JButton("Clear");
         clear.addActionListener(e -> {
-                inputarea.setText("");
-                outputarea.setText("");
-                inputarea.requestFocus();
+            parse.setEnabled(true);
+            inputarea.setText("");
+            outputarea.setText("");
+            inputarea.requestFocus();
             }
         );
 
@@ -121,7 +116,7 @@ public class PhiloUnicodeSwing extends JFrame{
             }
         );
 
-        quit = new JButton("Quit");
+        JButton quit = new JButton("Quit");
         quit.addActionListener(e -> {
                 inputarea.setText("You're finished!");
                 setVisible(false);
@@ -129,26 +124,24 @@ public class PhiloUnicodeSwing extends JFrame{
             }
         );
 
-        answer = new JButton("Answer");
+        JButton answer = new JButton("Answer");
         answer.setToolTipText("Returns an answer; anything equivalent is just as good.");
 
         parse = new JButton("Parse");
         parse.setToolTipText("Click this first; it will check that the formula is well-formed.");
-        parse.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    getParse();
-                } catch (ParseException ex) {
-                    ex.printStackTrace();
-                }
+        parse.addActionListener(e -> {
+            try {
+                getParse();
+            } catch (ParseException ex) {
+                ex.printStackTrace();
             }
         });
 
-        l = new JLabel("Choose example #");
+        JLabel l = new JLabel("Choose example #");
         //att = new Attempt();
         firstTime = true;
 
-        n1 = new Choice();
+        Choice n1 = new Choice();
         n1.setBackground(Color.white);
         //Note that addItem needs a string; one cannot add an int to a choice list
 
