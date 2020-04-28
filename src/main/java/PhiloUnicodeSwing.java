@@ -1,15 +1,14 @@
 /*
+4/19/2020 This is an application, with a main(), not an applet. This creates the
+GUI and connects to JavaCC to parse formulas. It corrects badly formed formulas.
+
+I now need to add the vulture server
+to connect with an IIS server running the Prolog code.
+
+If I can get all that running on my machine, then I will try to dockerize
+the whole chebang.
 
 
-  Dec 10, 2000  This is pretty close to all that I need in the GUI.
-	Don't really need the quantifier symbols for Philo, but can use
-	them later.
-	Need to hook this up with the logic code: JavaCC, the Parser,
-	the Server, and finally, Amzi components.  I want to see how easy
-	it is to connect with unicode symbols to Prolog.
-
-	Maybe read Eckel pp. 796 ff 2nd ed. on separating the business logic
-	from the UI logic.
 */
 import java.awt.*;
 import java.awt.event.ActionEvent;
