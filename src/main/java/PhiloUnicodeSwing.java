@@ -67,6 +67,7 @@ public class PhiloUnicodeSwing extends JFrame{
         //A TextArea where the example will be displayed
         JTextArea examplearea = new JTextArea(8, 50);
         examplearea.setLineWrap(true);
+        examplearea.setWrapStyleWord(true);
         examplearea.setEditable(false);
         examplearea.setBackground(Color.white);
         examplearea.setText("Welcome to Philo the Logician.\n\nGive me a chance to contact the server\nand get the first example.");
@@ -83,6 +84,7 @@ public class PhiloUnicodeSwing extends JFrame{
         //A TextArea where the server's analysis of their answer gets displayed
         outputarea = new JTextArea(8, 50);
         outputarea.setLineWrap(true); //otherwise horizontal bars appeared in ScrollPane
+        outputarea.setWrapStyleWord(true);
         outputarea.setFont(thisFont); //I do not need this in the final version
         outputarea.setEditable(false);
         outputarea.setBackground(Color.white); //a method of Component class
