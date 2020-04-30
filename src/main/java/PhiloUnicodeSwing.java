@@ -20,10 +20,12 @@ import amzi.ls.*;
 
 
 public class PhiloUnicodeSwing extends JFrame{
-
-    private JTextArea outputarea;
-    private JTextArea inputarea;
-
+   // Runtime.getRuntime().load("C:/Program Files/Amzi_Prolog/apls/bin");
+    LogicServer ls = new LogicServer();
+    public JTextArea outputarea;
+    public JTextArea inputarea;
+    public JTextArea examplearea;
+    long term;
     String  str, inputfile, outputfile;
     //Just testing
     private JButton sub;
@@ -43,8 +45,8 @@ public class PhiloUnicodeSwing extends JFrame{
     InnerJButton or  = new InnerJButton("\u2228");
     InnerJButton iff = new InnerJButton("\u2194");
     InnerJButton onlyif = new InnerJButton("\u2192");
-    InnerJButton all  = new InnerJButton("\u2200");
-    InnerJButton some  = new InnerJButton("\u2203");
+    //InnerJButton all  = new InnerJButton("\u2200");
+    //InnerJButton some  = new InnerJButton("\u2203");
 
     private PhiloUnicodeSwing() {
         super("Philo Swing User Interface");
@@ -58,13 +60,15 @@ public class PhiloUnicodeSwing extends JFrame{
 
         //They will type the symbols into this inputarea
         // Should I add an actionListener if they hit Enter?
+       //JTextArea inputarea;
         inputarea = new JTextArea(1, 15);
         //next needed to get onlyif and iff to appear
         inputarea.setFont(thisFont);
         inputarea.setBackground(Color.white);
 
         //A TextArea where the example will be displayed
-        JTextArea examplearea = new JTextArea(8, 50);
+        //JTextArea examplearea;
+        examplearea = new JTextArea(8, 50);
         examplearea.setLineWrap(true);
         examplearea.setWrapStyleWord(true);
         examplearea.setEditable(false);
@@ -81,6 +85,7 @@ public class PhiloUnicodeSwing extends JFrame{
 
 
         //A TextArea where the server's analysis of their answer gets displayed
+        //JTextArea outputarea;
         outputarea = new JTextArea(8, 50);
         outputarea.setLineWrap(true); //otherwise horizontal bars appeared in ScrollPane
         outputarea.setWrapStyleWord(true);
@@ -108,6 +113,15 @@ public class PhiloUnicodeSwing extends JFrame{
             }
         );
 
+        JButton quit = new JButton("Quit");
+        quit.addActionListener(e -> {
+                    inputarea.setText("You're finished!");
+                    setVisible(false);
+                    System.exit(0);
+                }
+        );
+
+
         sub = new JButton("Submit");
         sub.setToolTipText("Click this button to send your answer to be checked.");
         sub.addActionListener(e -> {
@@ -116,13 +130,7 @@ public class PhiloUnicodeSwing extends JFrame{
             }
         );
 
-        JButton quit = new JButton("Quit");
-        quit.addActionListener(e -> {
-                inputarea.setText("You're finished!");
-                setVisible(false);
-                System.exit(0);
-            }
-        );
+
 
         JButton answer = new JButton("Answer");
         answer.setToolTipText("Returns an answer; anything equivalent is just as good.");
@@ -154,8 +162,8 @@ public class PhiloUnicodeSwing extends JFrame{
         //a panel for buttons
         JPanel pb = new JPanel();
 
-        pb.add(all);
-        pb.add(some);
+       // pb.add(all);
+        //pb.add(some);
         pb.add(not);
         pb.add(and);
         pb.add(or);
