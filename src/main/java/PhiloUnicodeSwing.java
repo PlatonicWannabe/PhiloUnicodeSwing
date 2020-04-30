@@ -10,14 +10,13 @@ the whole chebang.
 
 
 */
+
+import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.CharArrayReader;
 import java.io.Reader;
 import java.text.ParseException;
-import javax.swing.*;
-
+import amzi.ls.*;
 
 
 public class PhiloUnicodeSwing extends JFrame{
@@ -180,29 +179,37 @@ public class PhiloUnicodeSwing extends JFrame{
         pn.add("Center",inputarea);
         pn.add("South", pb);
 
-        // This will be the center panel of our screen, underneath the north
-        // panel.  Put the example area above the outputarea.  Notice that we
-        // add the ScrollPanes which contain the TextAreas
+        /*
+         This will be the center panel of our screen, underneath the north
+         panel.  Put the example area above the outputarea.  Notice that we
+         add the ScrollPanes which contain the TextAreas
+        */
         JPanel pc = new JPanel();
 /*     pc.setLayout(new BorderLayout());
      pc.add("North",exampleareaScrollPane);
      pc.add("South",outputareaScrollPane);
 */
-        //this GridLayout eliminates the space coming from the Center
-        //of the BorderLayout when the window was expanded.
+        /*
+        this GridLayout eliminates the space coming from the Center
+        of the BorderLayout when the window was expanded.
+        */
 
         pc.setLayout(new GridLayout(2,1));
         pc.add(exampleareaScrollPane);
         pc.add(outputareaScrollPane);
 
-        // We want general action buttons to the left of the text areas, so create
-        // a panel which will go to the left (west) of the text areas.
+        /*
+         We want general action buttons to the left of the text areas, so create
+         a panel which will go to the left (west) of the text areas.
+        */
         JPanel pw = new JPanel();
         pw.setLayout(new BorderLayout());
 
-        // A new panel to go in the top (north) of the panel just created.
-        // Doing this constricts the buttons to a smaller shape than you
-        // get if you simply put this Grid of buttons directly into pw.
+        /*
+         A new panel to go in the top (north) of the panel just created.
+         Doing this constrains the buttons to a smaller shape than you
+         get if you simply put this Grid of buttons directly into pw.
+        */
         JPanel pwn = new JPanel();
         pwn.setLayout(new GridLayout(5,1));
         pwn.add(parse);
