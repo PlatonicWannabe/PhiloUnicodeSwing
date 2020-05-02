@@ -13,6 +13,8 @@ the whole chebang.
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.CharArrayReader;
 import java.io.Reader;
 import java.text.ParseException;
@@ -20,19 +22,18 @@ import amzi.ls.*;
 
 
 public class PhiloUnicodeSwing extends JFrame{
-   // Runtime.getRuntime().load("C:/Program Files/Amzi_Prolog/apls/bin");
     LogicServer ls = new LogicServer();
     public JTextArea outputarea;
     public JTextArea inputarea;
     public JTextArea examplearea;
     long term;
-    String  str, inputfile, outputfile;
-    //Just testing
+    String  str, response;
+    String example, translation;
+    JComboBox<String> cb;
     private JButton sub;
     private JButton parse;
     int width = 50;
     String errstr, n, strwidth, attempt, result;
-    String theOS, getexample, example, translation, getanswer;
     StrFormUni parser;
 
 
@@ -45,13 +46,19 @@ public class PhiloUnicodeSwing extends JFrame{
     InnerJButton or  = new InnerJButton("\u2228");
     InnerJButton iff = new InnerJButton("\u2194");
     InnerJButton onlyif = new InnerJButton("\u2192");
+    private String input;
     //InnerJButton all  = new InnerJButton("\u2200");
     //InnerJButton some  = new InnerJButton("\u2203");
 
     private PhiloUnicodeSwing() {
         super("Philo Swing User Interface");
-
         buildGUI();
+        try{
+            ls.Init("");
+            ls.Load("C:/Users/Bob/MyProlog/Philo/Amzi/unithrm9.xpl");
+            //outputarea.setText("Logic server and xpl file ready."); This showed.
+        } catch (LSException e) {System.err.println("Exception loading unithrm9: "+ e);}
+       // buildGUI();
     }
 
     private void buildGUI() {
@@ -146,19 +153,43 @@ public class PhiloUnicodeSwing extends JFrame{
         });
 
         JLabel l = new JLabel("Choose example #");
-        //att = new Attempt();
-        firstTime = true;
-
-        Choice n1 = new Choice();
-        n1.setBackground(Color.white);
+         firstTime = true;
+        cb = new JComboBox<String>();
+        cb.setBackground(Color.white);
         //Note that addItem needs a string; one cannot add an int to a choice list
-
         for(int i = 1; i < 11; i++) {
-            n1.addItem(String.valueOf(i));
+            cb.addItem(String.valueOf(i));
         }
+        cb.setSelectedIndex(1);
+        cb.setSelectedIndex(0);
+        cb.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent evt) {
+            /* outputarea.setText("You selected "+evt.getItem()); //--All three work if try-catch commented out.
+             outputarea.append("\n present("+(String) cb.getSelectedItem()+",X)");
+                outputarea.append("\n present("+cb.getSelectedItem()+",X)");
+             */
+               // outputarea.setText("");//A new example; clear old response
+                input = "present("+cb.getSelectedItem()+",X)";
+                outputarea.setText(input);
+                inputarea.setText("");
+                inputarea.requestFocus();
 
-        //Not needed in Swing?
-        //this.getContentPane().setBackground(Color.orange);
+              try {
+                 // input = "present("+cb.getSelectedItem()+",X)";
+                  term = ls.ExecStr(input);
+                  if (term != 0) {
+                       response = ls.GetStrArg(term, 2);
+                  }
+                  else {
+                      response = "I have no example of that number; try again \n";
+                  }
+                    //example = getExample("present("+cb.getSelectedItem()+",X)");
+                } catch (LSException e) {
+                    e.printStackTrace();
+                }
+                outputarea.setText(response);
+            }
+        });
         //a panel for buttons
         JPanel pb = new JPanel();
 
@@ -179,7 +210,7 @@ public class PhiloUnicodeSwing extends JFrame{
         JPanel pnw = new JPanel();
         pnw.setLayout(new FlowLayout(FlowLayout.LEFT));
         pnw.add(l);
-        pnw.add(n1);
+        pnw.add(cb);
 
         // At the top of the screen put the panel with the choice box, put
         // the input area and underneath put the panel of symbol buttons
@@ -271,6 +302,33 @@ public class PhiloUnicodeSwing extends JFrame{
         }
     }
 
+    /*protected String getExample(String input) throws LSException {
+        outputarea.setText("Sending"+input);
+        term = ls.ExecStr(input);
+        if (term != 0) {
+            String response = ls.GetStrArg(term, 2);
+        }
+        else {
+            response = "I have no example of that number; try again \n";
+        }
+        return response;
+    }
+*/
+   /* protected String getExample(String input) throws LSException {
+        try{
+            outputarea.setText("Sending "+input);
+          term = ls.ExecStr(input);
+            if (term != 0) {
+                String response = ls.GetStrArg(term, 2);
+            }
+			else {
+                    response = "I have no example of that number; try again.\n";
+                }
+            }catch(LSException ignored) {}
+            return response;
+        }
+*/
+
     public String addUnicodeEscapes(String str) {
         String retval = "";
         char ch;
@@ -285,6 +343,7 @@ public class PhiloUnicodeSwing extends JFrame{
         }
         return retval;
     }
+
 
 
     /**Note that any button created by this generic inner class has attached a
