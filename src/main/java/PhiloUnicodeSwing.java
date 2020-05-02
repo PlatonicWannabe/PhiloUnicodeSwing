@@ -132,12 +132,28 @@ public class PhiloUnicodeSwing extends JFrame{
         sub = new JButton("Submit");
         sub.setToolTipText("Click this button to send your answer to be checked.");
         sub.addActionListener(e -> {
-                outputarea.setText(inputarea.getText());
-                inputarea.requestFocus();
+                outputarea.setText("");
+                str = inputarea.getText();
+                n = (String)cb.getSelectedItem();
+                attempt = "try("+n+","+str+",T,X)";
+            try{
+                term=ls.ExecStr(attempt);
+                if (term != 0){
+                    String translation = ls.GetStrArg(term, 3);
+                    String analysis= ls.GetStrArg(term, 4);
+                    result = translation+" \n"+analysis;
+                }
+                else{
+                    result = "Sorry, I could not handle your answer; try again.\n";
+                }
+            }catch(LSException ex) {
+                ex.printStackTrace();
             }
+            outputarea.setText(result);
+                }
+
+
         );
-
-
 
         JButton answer = new JButton("Answer");
         answer.setToolTipText("Returns an answer; anything equivalent is just as good.");
@@ -152,7 +168,6 @@ public class PhiloUnicodeSwing extends JFrame{
                     else {
                         response = "There seems to be something messed up; try again. \n";
                     }
-
                 } catch (LSException lsException) {
                     lsException.printStackTrace();
                 }
