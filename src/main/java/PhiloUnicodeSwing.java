@@ -141,6 +141,23 @@ public class PhiloUnicodeSwing extends JFrame{
 
         JButton answer = new JButton("Answer");
         answer.setToolTipText("Returns an answer; anything equivalent is just as good.");
+        answer.addActionListener(e -> {
+                n = (String)cb.getSelectedItem();
+                input = "getanswer("+n+", X)";
+                try{
+                    term = ls.ExecStr(input);
+                    if (term != 0) {
+                        response = ls.GetStrArg(term, 2);
+                    }
+                    else {
+                        response = "There seems to be something messed up; try again. \n";
+                    }
+
+                } catch (LSException lsException) {
+                    lsException.printStackTrace();
+                }
+                outputarea.setText("A correct answer is: " +response);
+            });
 
         parse = new JButton("Parse");
         parse.setToolTipText("Click this first; it will check that the formula is well-formed.");
@@ -171,13 +188,12 @@ public class PhiloUnicodeSwing extends JFrame{
               try {
                   input = "present("+cb.getSelectedItem()+",X)";
                   term = ls.ExecStr(input);
-                  if (term != 0) {
+                    if (term != 0) {
                        response = ls.GetStrArg(term, 2);
-                  }
-                  else {
+                    }
+                    else {
                       response = "I have no example of that number; try again \n";
-                  }
-                    //example = getExample("present("+cb.getSelectedItem()+",X)");
+                    }
                 } catch (LSException e) {
                     e.printStackTrace();
                 }
