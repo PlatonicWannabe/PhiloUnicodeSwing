@@ -164,18 +164,12 @@ public class PhiloUnicodeSwing extends JFrame{
         cb.setSelectedIndex(0);
         cb.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent evt) {
-            /* outputarea.setText("You selected "+evt.getItem()); //--All three work if try-catch commented out.
-             outputarea.append("\n present("+(String) cb.getSelectedItem()+",X)");
-                outputarea.append("\n present("+cb.getSelectedItem()+",X)");
-             */
-               // outputarea.setText("");//A new example; clear old response
-                input = "present("+cb.getSelectedItem()+",X)";
-                outputarea.setText(input);
+                outputarea.setText("");//A new example; clear old response
                 inputarea.setText("");
                 inputarea.requestFocus();
 
               try {
-                 // input = "present("+cb.getSelectedItem()+",X)";
+                  input = "present("+cb.getSelectedItem()+",X)";
                   term = ls.ExecStr(input);
                   if (term != 0) {
                        response = ls.GetStrArg(term, 2);
@@ -187,7 +181,7 @@ public class PhiloUnicodeSwing extends JFrame{
                 } catch (LSException e) {
                     e.printStackTrace();
                 }
-                outputarea.setText(response);
+                examplearea.setText(response);
             }
         });
         //a panel for buttons
@@ -301,33 +295,6 @@ public class PhiloUnicodeSwing extends JFrame{
             parse.setEnabled(true);
         }
     }
-
-    /*protected String getExample(String input) throws LSException {
-        outputarea.setText("Sending"+input);
-        term = ls.ExecStr(input);
-        if (term != 0) {
-            String response = ls.GetStrArg(term, 2);
-        }
-        else {
-            response = "I have no example of that number; try again \n";
-        }
-        return response;
-    }
-*/
-   /* protected String getExample(String input) throws LSException {
-        try{
-            outputarea.setText("Sending "+input);
-          term = ls.ExecStr(input);
-            if (term != 0) {
-                String response = ls.GetStrArg(term, 2);
-            }
-			else {
-                    response = "I have no example of that number; try again.\n";
-                }
-            }catch(LSException ignored) {}
-            return response;
-        }
-*/
 
     public String addUnicodeEscapes(String str) {
         String retval = "";
