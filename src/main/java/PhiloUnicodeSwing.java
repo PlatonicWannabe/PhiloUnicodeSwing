@@ -115,6 +115,7 @@ public class PhiloUnicodeSwing extends JFrame{
         clear.addActionListener(e -> {
             parse.setEnabled(true);
             inputarea.setText("");
+            examplearea.setText("");
             outputarea.setText("");
             inputarea.requestFocus();
             }
@@ -197,6 +198,7 @@ public class PhiloUnicodeSwing extends JFrame{
         cb.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent evt) {
                 outputarea.setText("");//A new example; clear old response
+                examplearea.setText("");
                 inputarea.setText("");
                 inputarea.requestFocus();
 
