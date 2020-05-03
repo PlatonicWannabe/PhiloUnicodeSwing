@@ -138,7 +138,7 @@ public class PhiloUnicodeSwing extends JFrame{
                 n = (String)cb.getSelectedItem();
                 attempt = "try("+n+","+str+",T,X)";
             try{
-                term=ls.ExecStr(attempt);
+                term = ls.ExecStr(attempt);
                 if (term != 0){
                     String translation = ls.GetStrArg(term, 3);
                     String analysis= ls.GetStrArg(term, 4);
