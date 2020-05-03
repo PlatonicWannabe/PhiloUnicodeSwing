@@ -1,0 +1,120 @@
+
+options {
+	LOOKAHEAD=1;
+	//USER_CHAR_STREAM=true;
+	JAVA_UNICODE_ESCAPE=true;
+	//UNICODE_INPUT=true;
+	//DEBUG_TOKEN_MANAGER=true;
+
+
+}
+
+PARSER_BEGIN(StrFormUni)
+
+public class StrFormUni {
+	String s;
+	static java.util.Stack argStack = new java.util.Stack();
+}
+PARSER_END(StrFormUni)
+
+SKIP :
+{
+	" "
+|	"\r"
+|	"\t"
+}
+
+TOKEN :
+{
+	< EOL: "\n" >
+}
+
+TOKEN : /* OPERATORS */
+{
+	< NEG: "\u00ac" >
+  | < AND: "\u2227" >
+  | < OR:  "\u2228" >
+  | <ONLYIF: "\u2192">
+  | < IFF: "\u2194" >
+
+}
+
+TOKEN : /* VARIABLE NAMES */
+{
+	< VAR: <LETTER> (<DIGIT>)* >
+   |	< #LETTER: ["p"-"t"] >
+   |	< #DIGIT:  ["0"-"9"] >
+}
+
+void input() :
+{}
+{
+	bicond() <EOL>
+}
+
+void bicond() :
+{ }
+{
+	cond() ( <IFF> cond()
+	{
+		String a = ((String) argStack.pop());
+		String b = ((String) argStack.pop());
+		argStack.push("("+b+" \u2194 "+a+")");
+	}
+	)*
+}
+
+void cond() :
+{ }
+{
+	disj() ( <ONLYIF> disj()
+	{
+		String a = ((String) argStack.pop());
+		String b = ((String) argStack.pop());
+		argStack.push("("+b+" \u2192 "+a+")");
+	}
+	)*
+}
+
+void disj() :
+{ }
+{
+	conj() ( <OR> conj()
+	{
+		String a = ((String) argStack.pop());
+		String b = ((String) argStack.pop());
+		argStack.push("("+b+" \u2228 "+a+")");
+	}
+	)*
+}
+
+void conj() :
+{ }
+{
+	unary() ( <AND> unary()
+	{
+		String a = ((String) argStack.pop());
+		String b = ((String) argStack.pop());
+		argStack.push("("+b+" \u2227 "+a+")");
+	}
+	)*
+}
+
+void unary() :
+{ }
+{
+	<NEG> element()
+	{
+		String a = ((String) argStack.pop());
+		argStack.push("\u00ac"+a);
+	}
+   | element()
+}
+
+void element() :
+{}
+{
+	<VAR> {argStack.push(token.image);}
+   | "(" bicond() ")"
+}
+

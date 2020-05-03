@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="PUSArtifacts">
+    <output-path>$PROJECT_DIR$/out/artifacts/PUSArtifacts</output-path>
+    <root id="archive" name="PUSArtifacts.jar">
+      <element id="module-output" name="PhiloUnicodeSwing" />
+    </root>
+  </artifact>
+</component>
