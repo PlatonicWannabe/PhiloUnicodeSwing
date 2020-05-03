@@ -88,7 +88,7 @@ public class PhiloUnicodeSwing extends JFrame{
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         exampleareaScrollPane.setPreferredSize(new Dimension(400, 200));
         //puts a title above the ScrollPane
-        exampleareaScrollPane.setBorder(BorderFactory.createTitledBorder("Give me a formula equivalent to:"));
+        exampleareaScrollPane.setBorder(BorderFactory.createTitledBorder("Formalize an example sentence."));
 
 
         //A TextArea where the server's analysis of their answer gets displayed
