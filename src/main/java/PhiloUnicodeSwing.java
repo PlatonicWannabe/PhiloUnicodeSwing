@@ -74,7 +74,7 @@ public class PhiloUnicodeSwing extends JFrame{
         examplearea.setWrapStyleWord(true);
         examplearea.setEditable(false);
         examplearea.setBackground(Color.white);
-        examplearea.setText("Welcome to Philo the Logician.\n\nGive me a chance to contact the server\nand get the first example.");
+        examplearea.setText("Welcome to Philo the Logician.\n\nSelect a number for your first example to try.");
 
         //wrap it in a ScrollPane with a title
         JScrollPane exampleareaScrollPane = new JScrollPane(examplearea);
