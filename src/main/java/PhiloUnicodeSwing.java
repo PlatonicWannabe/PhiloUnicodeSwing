@@ -26,18 +26,18 @@ public class PhiloUnicodeSwing extends JFrame{
     public JTextArea outputarea;
     public JTextArea inputarea;
     public JTextArea examplearea;
-    long term;
-    String  str, response;
-    String example, translation;
+    //long term;
+    //String  str, response;
+    //String example, translation;
     JComboBox<String> cb;
     private JButton sub;
     private JButton parse;
-    int width = 50;
-    String errstr, n, strwidth, attempt, result;
-    StrFormUni parser;
+    //int width = 50;
+    //String errstr, n, strwidth, attempt, result;
+    //StrFormUni parser;
 
-
-    private Font thisFont=new Font("Arial Unicode MS", Font.PLAIN, 12);
+    private Font thisFont=new Font("Lucida Sans Unicode", Font.PLAIN, 12);
+    //private Font thisFont=new Font("Arial Unicode MS", Font.PLAIN, 12);
 
     private boolean firstTime;
 
@@ -132,25 +132,27 @@ public class PhiloUnicodeSwing extends JFrame{
 
         sub = new JButton("Submit");
         sub.setToolTipText("Click this button to send your answer to be checked.");
+
         sub.addActionListener(e -> {
+            String response = "";
                 outputarea.setText("");
-                str = inputarea.getText();
-                n = (String)cb.getSelectedItem();
-                attempt = "try("+n+","+str+",T,X)";
+               String str = inputarea.getText();
+               String n = (String)cb.getSelectedItem();
+                String attempt = "try("+n+","+str+",T,X)";
             try{
-                term = ls.ExecStr(attempt);
+                long term = ls.ExecStr(attempt);
                 if (term != 0){
                     String translation = ls.GetStrArg(term, 3);
                     String analysis= ls.GetStrArg(term, 4);
-                    result = translation+" \n"+analysis;
+                    response = translation+" \n"+analysis;
                 }
                 else{
-                    result = "Sorry, I could not handle your answer; try again.\n";
+                    response = "Sorry, I could not handle your answer; try again.\n";
                 }
             }catch(LSException ex) {
                 ex.printStackTrace();
             }
-            outputarea.setText(result);
+            outputarea.setText(response);
                 }
 
 
@@ -158,11 +160,13 @@ public class PhiloUnicodeSwing extends JFrame{
 
         JButton answer = new JButton("Answer");
         answer.setToolTipText("Returns an answer; anything equivalent is just as good.");
+
         answer.addActionListener(e -> {
-                n = (String)cb.getSelectedItem();
-                input = "getanswer("+n+", X)";
+               String n = (String)cb.getSelectedItem();
+               String input = "getanswer("+n+", X)";
+               String response = "";
                 try{
-                    term = ls.ExecStr(input);
+                    long term = ls.ExecStr(input);
                     if (term != 0) {
                         response = ls.GetStrArg(term, 2);
                     }
@@ -197,6 +201,7 @@ public class PhiloUnicodeSwing extends JFrame{
         cb.setSelectedIndex(0);
         cb.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent evt) {
+                String example = "";
                 outputarea.setText("");//A new example; clear old response
                 examplearea.setText("");
                 inputarea.setText("");
@@ -204,17 +209,17 @@ public class PhiloUnicodeSwing extends JFrame{
 
               try {
                   input = "present("+cb.getSelectedItem()+",X)";
-                  term = ls.ExecStr(input);
+                  long term = ls.ExecStr(input);
                     if (term != 0) {
-                       response = ls.GetStrArg(term, 2);
+                       example = ls.GetStrArg(term, 2);
                     }
                     else {
-                      response = "I have no example of that number; try again \n";
+                      example = "I have no example of that number; try again \n";
                     }
                 } catch (LSException e) {
                     e.printStackTrace();
                 }
-                examplearea.setText(response);
+                examplearea.setText(example);
             }
         });
         //a panel for buttons
@@ -304,7 +309,7 @@ public class PhiloUnicodeSwing extends JFrame{
     }//end buildGUI
 
     public void getParse() throws ParseException {
-        str = this.inputarea.getText();
+        String str = this.inputarea.getText();
         String unistr = addUnicodeEscapes(str);
         String parsestr = unistr+"\n";
         char[] contents = parsestr.toCharArray();
