@@ -199,28 +199,26 @@ public class PhiloUnicodeSwing extends JFrame{
         }
         cb.setSelectedIndex(1);
         cb.setSelectedIndex(0);
-        cb.addItemListener(new ItemListener() {
-            public void itemStateChanged(ItemEvent evt) {
-                String example = "";
-                outputarea.setText("");//A new example; clear old response
-                examplearea.setText("");
-                inputarea.setText("");
-                inputarea.requestFocus();
+        cb.addItemListener(evt -> {
+            String example = "";
+            outputarea.setText("");//A new example; clear old response
+            examplearea.setText("");
+            inputarea.setText("");
+            inputarea.requestFocus();
 
-              try {
-                  input = "present("+cb.getSelectedItem()+",X)";
-                  long term = ls.ExecStr(input);
-                    if (term != 0) {
-                       example = ls.GetStrArg(term, 2);
-                    }
-                    else {
-                      example = "I have no example of that number; try again \n";
-                    }
-                } catch (LSException e) {
-                    e.printStackTrace();
+          try {
+              input = "present("+cb.getSelectedItem()+",X)";
+              long term = ls.ExecStr(input);
+                if (term != 0) {
+                   example = ls.GetStrArg(term, 2);
                 }
-                examplearea.setText(example);
+                else {
+                  example = "I have no example of that number; try again \n";
+                }
+            } catch (LSException e) {
+                e.printStackTrace();
             }
+            examplearea.setText(example);
         });
         //a panel for buttons
         JPanel pb = new JPanel();
