@@ -26,15 +26,9 @@ public class PhiloUnicodeSwing extends JFrame{
     public JTextArea outputarea;
     public JTextArea inputarea;
     public JTextArea examplearea;
-    //long term;
-    //String  str, response;
-    //String example, translation;
     JComboBox<String> cb;
     private JButton sub;
     private JButton parse;
-    //int width = 50;
-    //String errstr, n, strwidth, attempt, result;
-    //StrFormUni parser;
 
     private Font thisFont=new Font("Lucida Sans Unicode", Font.PLAIN, 12);
     //private Font thisFont=new Font("Arial Unicode MS", Font.PLAIN, 12);
