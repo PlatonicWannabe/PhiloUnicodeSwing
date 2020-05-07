@@ -29,6 +29,7 @@ public class PhiloUnicodeSwing extends JFrame{
     JComboBox<String> cb;
     private JButton sub;
     private JButton parse;
+    String theParse;
 
     private Font thisFont=new Font("Lucida Sans Unicode", Font.PLAIN, 12);
     //private Font thisFont=new Font("Arial Unicode MS", Font.PLAIN, 12);
@@ -108,6 +109,7 @@ public class PhiloUnicodeSwing extends JFrame{
         JButton clear = new JButton("Clear");
         clear.addActionListener(e -> {
             parse.setEnabled(true);
+            theParse = "";
             inputarea.setText("");
             examplearea.setText("");
             outputarea.setText("");
@@ -130,7 +132,13 @@ public class PhiloUnicodeSwing extends JFrame{
         sub.addActionListener(e -> {
             String response = "";
                 outputarea.setText("");
-               String str = inputarea.getText();
+            try {
+                getParse();
+            } catch (ParseException parseException) {
+                parseException.printStackTrace();
+            }
+            //String str = inputarea.getText();
+            String str = theParse;
                String n = (String)cb.getSelectedItem();
                 String attempt = "try("+n+","+str+",T,X)";
             try{
@@ -147,10 +155,7 @@ public class PhiloUnicodeSwing extends JFrame{
                 ex.printStackTrace();
             }
             outputarea.setText(response);
-                }
-
-
-        );
+        });
 
         JButton answer = new JButton("Answer");
         answer.setToolTipText("Returns an answer; anything equivalent is just as good.");
@@ -196,6 +201,7 @@ public class PhiloUnicodeSwing extends JFrame{
         cb.addItemListener(evt -> {
             String example = "";
             outputarea.setText("");//A new example; clear old response
+            theParse = "";
             examplearea.setText("");
             inputarea.setText("");
             inputarea.requestFocus();
@@ -300,7 +306,7 @@ public class PhiloUnicodeSwing extends JFrame{
         setVisible(true);
     }//end buildGUI
 
-    public void getParse() throws ParseException {
+   public void getParse() throws ParseException {
         String str = this.inputarea.getText();
         String unistr = addUnicodeEscapes(str);
         String parsestr = unistr+"\n";
@@ -316,6 +322,7 @@ public class PhiloUnicodeSwing extends JFrame{
             StrFormUni.input();
             String s = ((String) StrFormUni.argStack.pop());
             outputarea.setText("Canonical form = " + s + "\n\n");
+            theParse = s;
             parse.setEnabled(false);
             sub.setEnabled(true);
 
@@ -340,8 +347,6 @@ public class PhiloUnicodeSwing extends JFrame{
         }
         return retval;
     }
-
-
 
     /**Note that any button created by this generic inner class has attached a
      lambda expression that listens for the event of the button
